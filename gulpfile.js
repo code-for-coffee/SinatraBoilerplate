@@ -7,9 +7,14 @@ var es6transpiler = require('gulp-es6-transpiler');
 var settings = {
   customJsFolder: 'js/app/*.js',
   jsLibsFolder: 'js/libs/*.js',
-  jsTranspiledES6Folder: 'js/libs/*.js',
+  jsTranspiledES6Folder: 'js/transpiled/',
   distributionFolder: 'public/scripts/'
 };
+
+// listen for ES6 changes only
+// watch([settings.customJsFolder], function() {
+//   gulp.start('transpiling-js-to-es6');
+// });
 
 watch([settings.jsLibsFolder, settings.customJsFolder], function() {
   gulp.start('default');
@@ -17,16 +22,17 @@ watch([settings.jsLibsFolder, settings.customJsFolder], function() {
 
 gulp.task('default', function () {
 
-  //gulp.start('transpileES6');
+  gulp.start('transpiling-es6-to-es5');
 
-  return gulp.src(['js/libs/jquery.js', 'js/libs/underscore.js', 'js/libs/backbone.js', settings.jsTranspiledES6Folder])
+  return gulp.src(['js/libs/jquery.js', 'js/libs/underscore.js', 'js/libs/backbone.js', settings.jsTranspiledES6Folder + '*.js'])
     .pipe(concat('app.js'))
     .pipe(uglify())
     .pipe(gulp.dest(settings.distributionFolder));
 });
 
-gulp.task('transpileES6', function() {
-  return gulp.src(settings.jsTranspiledES6Folder)
+gulp.task('transpiling-es6-to-es5', function() {
+   return gulp.src(settings.customJsFolder)
+    .pipe(concat('app.js'))
     .pipe(es6transpiler())
-    .pipe(gulp.dest(settings.distributionFolder));
+    .pipe(gulp.dest(settings.jsTranspiledES6Folder));
 });
