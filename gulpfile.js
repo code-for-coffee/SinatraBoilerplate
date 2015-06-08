@@ -2,6 +2,7 @@ var gulp = require('gulp');
 var uglify = require('gulp-uglify');
 var concat = require('gulp-concat');
 var watch = require('gulp-watch');
+var es6transpiler = require('gulp-es6-transpiler');
 
 var settings = {
   customJsFolder: 'js/app/*.js',
@@ -10,12 +11,12 @@ var settings = {
 };
 
 watch([settings.jsLibsFolder, settings.customJsFolder], function() {
-    gulp.start('default');
+  gulp.start('default');
 });
 
 gulp.task('default', function () {
-    return gulp.src(['js/libs/jquery.js', 'js/libs/underscore.js', 'js/libs/backbone.js', settings.customJsFolder])
-      .pipe(concat('app.js'))
-      .pipe(uglify())
-      .pipe(gulp.dest(settings.distributionFolder));
+  return gulp.src(['js/libs/jquery.js', 'js/libs/underscore.js', 'js/libs/backbone.js', settings.customJsFolder])
+    .pipe(concat('app.js'))
+    .pipe(uglify())
+    .pipe(gulp.dest(settings.distributionFolder));
 });
