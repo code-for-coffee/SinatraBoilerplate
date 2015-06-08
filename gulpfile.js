@@ -14,7 +14,7 @@ watch([settings.jsLibsFolder, settings.customJsFolder], function() {
 });
 
 gulp.task('default', function () {
-    return gulp.src([settings.jsLibsFolder, settings.customJsFolder])
+    return gulp.src(['js/libs/jquery.js', 'js/libs/underscore.js', 'js/libs/backbone.js', settings.customJsFolder])
       .pipe(concat('app.js'))
       .pipe(uglify())
       .pipe(gulp.dest(settings.distributionFolder));
